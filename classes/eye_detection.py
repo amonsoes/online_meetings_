@@ -17,11 +17,11 @@ predictor = dlib.shape_predictor(model_path)
 def EAR_to_prob(ear):
     # plot ear to scores. 0.38 seems like it's the maximum for "openness"
     if ear < 0.10:
-        ear = ear - 0.4
+        ear = ear - 0.6
     elif ear < 0.15:
-        ear = ear - 0.3
+        ear = ear - 0.5
     elif ear < 0.21:
-        ear = ear - 0.2
+        ear = ear - 0.3
     return 0.45 - ear
 
 def detect_attention(frame, gazehub, visual=True):

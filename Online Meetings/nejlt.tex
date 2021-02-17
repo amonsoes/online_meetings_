@@ -11,7 +11,7 @@
 
 \title{Online-Meetings: Real-Time Attention And Emotion Analysis}
 \author{
-Dominik\and Philipp Althaus
+Dominik Ott\and Philipp Althaus
  \and
 Amon Soares de Souza
 }
@@ -109,8 +109,9 @@ VR(x,y) = \frac{DIST_V(x)+DIST_V(y)}{2}
 \end{equation}
 \\
 
-The ratios are then used to determine the gaze. The result will be a scalar $x= [0,1]$. We then use heuristic thresholds to determine when the algorithm classifies a gaze to go up, be centered or left/right. For the horizontal ratio, if that ratio turned out to be below 0.35, the participant looks left. If it’s 0.35 < x < 0.75, the ratio will be classified as centered. For the vertical model it’s similar, with the threshold being 0.35 < x < 0.75, it is centered, below that, the participant is looking up, above that, the participant is looking down.
-
+The ratios are then used to determine the gaze. The result will be a scalar $x= [0,1]$. We then use heuristic thresholds to determine when the algorithm classifies a gaze to go up, be centered or left/right. For the horizontal ratio, if that ratio turned out to be below 0.35, the participant looks left. If it’s 0.35 < x < 0.75, the ratio will be classified as centered. For the vertical model it’s similar, with the threshold being 0.35 < x < 0.75, it is centered, below that, the participant is looking up, above that, the participant is looking down. \newline
+\\
+The Performance of the attention was measured with an annotated video, where we set the expected attention score to be within a certain interval. If the attention score from our model fell within that interval, it was classified as correct. Otherwise it will be classified as incorrect. The model yielded an accuracy of 0.83. The biggest issues were thresholds, where the gaze went from one state to another, as well as looking up, where the EAR goes way up and the punishment of the faulty gaze is not enough to suppress the score accordingly.
 \section{Emotion Classification}
 The emotion derived from the facial expression will also be classified. Even though this could theoretically be done by any classification algorithm. many machine learning algorithms like Support Vector Machines or k-nearest-neighbor classifiers will fail due to the complexity of image classification. Images usually consist of a number of pixels divided into $3$ color channels. For a high-definition image this results in over $6$ million inputs per image. Even for a very low resolution image, e.g. $48 \times 48$ there are about $7,000$ inputs. Deep learning algorithms are generally able to deal with such inputs. An architecture that has been proven well in the field of image classification are so called Convolutional Neural Networks (CNN). Due to a special type of layer, the convolutional layer, CNNs are able to exploit local structure in data which is especially relevant for images.
 
@@ -301,6 +302,32 @@ The results of the evaluated models are summarized in Table \ref{tab:results}. T
   \caption{Number of parameters and validation accuracy for the evaluated models.}
   \label{tab:results}
 \end{table}
+
+\section{Statistical Analysis}
+An important part of the project was the way in which the results would be presented to the user. We wanted the user to be able to revise his meeting or presentation in a meaningful way. While the attention is able to be displayed presentable and descriptive even during the meeting it is more complicated for emotions. We decided that unlike the attention we wouldn't display the emotions live on screen as it could lead to confusion and would only be displayable in an unintuitive way.
+ 
+\begin{figure}
+ 	\centering
+ 	\includegraphics[width=.4\textwidth]{"Statistical_Overview"} 
+ 	\caption{Statistical Analysis of a Meeting}
+ 	\label{fig:statisticalOverview}
+\end{figure}
+
+So we implemented another PyQt5 window to appear at the end of our program and give a statistical overview of the meeting as can be seen in Figure \ref{fig:statisticalOverview}. We settled on displaying three seperate graphs that we judged as essential. The leftmost graph is a repetition of the attention graph we show during the live meeting. Instead of plotting just the last seconds that are relevant during a meeting we now show the attention throughout the whole meeting. 
+
+For the emotions we added the two other graphs. The one in the middle gives an overview of the general mood during the meeting. It's a simple bar chart that displays the summed up emotion output of our model. The most dominant emotion will also be displayed at the bottom to depict the most common emotion at first glance. While this gives a summary of all the emotions that our model detected it doesn't give any information about the chronological order of our emotion output. This is why we added the third graph. It is another bar bar chart with a text window below it. In the text window the user can write a time in seconds. The program will then look for the next time stamp after the inserted time and output the emotion detected at that time stamp. That way the user can also revise the emotions of the meetings participants at a certain time of the meeting. 
+
+Lastly we added a save button that gives the user the possibility to save the meetings analysis and plot it again later. This enables the user to compare current meetings with meetings he saved a while back and compare results and see improvements or areas where he could perform better. 
+
+\section{Discussion}
+
+Developing our tool gave us great insight into the topic of affective computing. We developed two seperate approaches, one being our attention model working with dlib's model for landmark construction and the other one being our own CNN architecture. We were able to experiment a lot with different models and achieve varying results until we got to the point where we were satisfied with the accuracy and settled on our current architecture. Individually our models achieve great results and work convincingly. 
+
+However we had problems getting sufficient test data for our full program. The biggest hurdle was not having access to the Zoom API or the like as it made it extremely hard for our program to get the necessary input we needed. Most of our testing was run on individual videos or our webcames that we had access to. Without the Zoom API and with the limited access to only the small pictures of other participants that we see on our screen it became increasingly harder for us to analyse their attention and emotional state properly. If we had access to the cameras and could run our program supported by the Zoom API we would most likely achieve a lot better results and would be able to develop our app more into a practically viable tool. 
+
+\section{Conclusion}
+
+Tracking the attention and emotional states of the participants of online meetings or lectures is without doubt becoming more important than ever. Our approach showed great results at tracking individuals attention and emotions. However our model should be viewed as more of a proof of concept than as a finished app. We demonstrated that it is possible to track peoples attention and emotions accurately through their webcam. It is an approach that is clearly able to be developed into a bigger project that works accurately for meetings with multiple participants, but for us without having access to the Zoom API or the like it is next to impossible to develop this into a fully functional app.
 
 \bibliography{nejlt}
 \bibliographystyle{nejlt_bib}

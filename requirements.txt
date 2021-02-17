@@ -1,6 +1,11 @@
-cv2==4.5.1
-dlib==19.21.1
+opencv_python_headless==4.5.1.48
+mss==6.1.0
 scipy==1.5.0
-numpy==1.19.4
-PyQt5
 pyqtgraph==0.11.1
+matplotlib==3.2.2
+numpy==1.19.4
+pandas==1.0.5
+tensorflow==2.4.0
+dlib==19.21.1
+Pillow==8.1.0
+PyQt5==5.15.2

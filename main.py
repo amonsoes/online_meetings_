@@ -36,6 +36,12 @@ def main(path, vis_interval, plot_interval):
     app.exec_()
 
 
+def cnn(array):
+    # replace this fcn with cnn-call
+    output = fb.createRndEmo()
+    return output
+
+
 def capture(cap, plot, start_time, plot_interval, gazehub):
     ret, plot_counter = True, 0
     ret, frame = cap.read()
